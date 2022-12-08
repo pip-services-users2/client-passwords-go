@@ -2,7 +2,6 @@ package version1
 
 import (
 	"context"
-	"reflect"
 
 	cdata "github.com/pip-services3-gox/pip-services3-commons-gox/data"
 	cclients "github.com/pip-services3-gox/pip-services3-rpc-gox/clients"
@@ -10,15 +9,11 @@ import (
 
 type PasswordsHttpCommandableClientV1 struct {
 	*cclients.CommandableHttpClient
-	userPasswordInfoV1Type reflect.Type
-	mapType                reflect.Type
 }
 
 func NewPasswordsHttpCommandableClientV1() *PasswordsHttpCommandableClientV1 {
 	c := &PasswordsHttpCommandableClientV1{
-		CommandableHttpClient:  cclients.NewCommandableHttpClient("v1/passwords"),
-		userPasswordInfoV1Type: reflect.TypeOf(&UserPasswordInfoV1{}),
-		mapType:                reflect.TypeOf(make(map[string]bool)),
+		CommandableHttpClient: cclients.NewCommandableHttpClient("v1/passwords"),
 	}
 	return c
 }
