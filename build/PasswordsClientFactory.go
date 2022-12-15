@@ -23,7 +23,7 @@ func NewPasswordsClientFactory() *PasswordsClientFactory {
 
 	// c.RegisterType(nullClientDescriptor, clients1.NewPasswordsNullClientV1)
 	// c.RegisterType(directClientDescriptor, clients1.NewPasswordsDirectClientV1)
-	c.RegisterType(cmdHttpClientDescriptor, clients1.NewPasswordsHttpCommandableClientV1)
+	c.RegisterType(cmdHttpClientDescriptor, clients1.NewPasswordsCommandableHttpClientV1)
 	c.RegisterType(grpcClientDescriptor, clients1.NewPasswordGrpcClientV1)
 	c.RegisterType(memoryClientDescriptor, clients1.NewPasswordsMemoryClientV1)
 

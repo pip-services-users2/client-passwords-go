@@ -9,16 +9,16 @@ import (
 	"github.com/pip-services3-gox/pip-services3-commons-gox/config"
 )
 
-type passwordsHttpCommandableClientV1Test struct {
-	client  *version1.PasswordsHttpCommandableClientV1
+type passwordsCommandableHttpClientV1Test struct {
+	client  *version1.PasswordsCommandableHttpClientV1
 	fixture *PasswordsClientFixtureV1
 }
 
-func newPasswordsHttpCommandableClientV1Test() *passwordsHttpCommandableClientV1Test {
-	return &passwordsHttpCommandableClientV1Test{}
+func newPasswordsCommandableHttpClientV1Test() *passwordsCommandableHttpClientV1Test {
+	return &passwordsCommandableHttpClientV1Test{}
 }
 
-func (c *passwordsHttpCommandableClientV1Test) setup(t *testing.T) *PasswordsClientFixtureV1 {
+func (c *passwordsCommandableHttpClientV1Test) setup(t *testing.T) *PasswordsClientFixtureV1 {
 	var HTTP_HOST = os.Getenv("HTTP_HOST")
 	if HTTP_HOST == "" {
 		HTTP_HOST = "localhost"
@@ -34,7 +34,7 @@ func (c *passwordsHttpCommandableClientV1Test) setup(t *testing.T) *PasswordsCli
 		"connection.port", HTTP_PORT,
 	)
 
-	c.client = version1.NewPasswordsHttpCommandableClientV1()
+	c.client = version1.NewPasswordsCommandableHttpClientV1()
 	c.client.Configure(context.Background(), httpConfig)
 	c.client.Open(context.Background(), "")
 
@@ -43,12 +43,12 @@ func (c *passwordsHttpCommandableClientV1Test) setup(t *testing.T) *PasswordsCli
 	return c.fixture
 }
 
-func (c *passwordsHttpCommandableClientV1Test) teardown(t *testing.T) {
+func (c *passwordsCommandableHttpClientV1Test) teardown(t *testing.T) {
 	c.client.Close(context.Background(), "")
 }
 
 func TestHttpRecoverPassword(t *testing.T) {
-	c := newPasswordsHttpCommandableClientV1Test()
+	c := newPasswordsCommandableHttpClientV1Test()
 	fixture := c.setup(t)
 	defer c.teardown(t)
 
@@ -56,7 +56,7 @@ func TestHttpRecoverPassword(t *testing.T) {
 }
 
 func TestHttpChangePassword(t *testing.T) {
-	c := newPasswordsHttpCommandableClientV1Test()
+	c := newPasswordsCommandableHttpClientV1Test()
 	fixture := c.setup(t)
 	defer c.teardown(t)
 
@@ -64,7 +64,7 @@ func TestHttpChangePassword(t *testing.T) {
 }
 
 func TestHttpSigninWithWrongPassword(t *testing.T) {
-	c := newPasswordsHttpCommandableClientV1Test()
+	c := newPasswordsCommandableHttpClientV1Test()
 	fixture := c.setup(t)
 	defer c.teardown(t)
 

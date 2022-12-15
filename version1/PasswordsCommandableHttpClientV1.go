@@ -7,18 +7,18 @@ import (
 	cclients "github.com/pip-services3-gox/pip-services3-rpc-gox/clients"
 )
 
-type PasswordsHttpCommandableClientV1 struct {
+type PasswordsCommandableHttpClientV1 struct {
 	*cclients.CommandableHttpClient
 }
 
-func NewPasswordsHttpCommandableClientV1() *PasswordsHttpCommandableClientV1 {
-	c := &PasswordsHttpCommandableClientV1{
+func NewPasswordsCommandableHttpClientV1() *PasswordsCommandableHttpClientV1 {
+	c := &PasswordsCommandableHttpClientV1{
 		CommandableHttpClient: cclients.NewCommandableHttpClient("v1/passwords"),
 	}
 	return c
 }
 
-func (c *PasswordsHttpCommandableClientV1) GetPasswordInfo(ctx context.Context, correlationId string,
+func (c *PasswordsCommandableHttpClientV1) GetPasswordInfo(ctx context.Context, correlationId string,
 	userId string) (result *UserPasswordInfoV1, err error) {
 	params := cdata.NewAnyValueMapFromTuples(
 		"user_id", userId,
@@ -32,7 +32,7 @@ func (c *PasswordsHttpCommandableClientV1) GetPasswordInfo(ctx context.Context, 
 	return cclients.HandleHttpResponse[*UserPasswordInfoV1](res, correlationId)
 }
 
-func (c *PasswordsHttpCommandableClientV1) SetTempPassword(ctx context.Context, correlationId string,
+func (c *PasswordsCommandableHttpClientV1) SetTempPassword(ctx context.Context, correlationId string,
 	userId string) (password string, err error) {
 	params := cdata.NewAnyValueMapFromTuples(
 		"user_id", userId,
@@ -46,7 +46,7 @@ func (c *PasswordsHttpCommandableClientV1) SetTempPassword(ctx context.Context, 
 	return cclients.HandleHttpResponse[string](res, correlationId)
 }
 
-func (c *PasswordsHttpCommandableClientV1) SetPassword(ctx context.Context, correlationId string, userId string, password string) error {
+func (c *PasswordsCommandableHttpClientV1) SetPassword(ctx context.Context, correlationId string, userId string, password string) error {
 	params := cdata.NewAnyValueMapFromTuples(
 		"user_id", userId,
 		"password", password,
@@ -56,7 +56,7 @@ func (c *PasswordsHttpCommandableClientV1) SetPassword(ctx context.Context, corr
 	return err
 }
 
-func (c *PasswordsHttpCommandableClientV1) DeletePassword(ctx context.Context, correlationId string, userId string) error {
+func (c *PasswordsCommandableHttpClientV1) DeletePassword(ctx context.Context, correlationId string, userId string) error {
 	params := cdata.NewAnyValueMapFromTuples(
 		"user_id", userId,
 	)
@@ -65,7 +65,7 @@ func (c *PasswordsHttpCommandableClientV1) DeletePassword(ctx context.Context, c
 	return err
 }
 
-func (c *PasswordsHttpCommandableClientV1) Authenticate(ctx context.Context, correlationId string, userId string,
+func (c *PasswordsCommandableHttpClientV1) Authenticate(ctx context.Context, correlationId string, userId string,
 	password string) (authenticated bool, err error) {
 	params := cdata.NewAnyValueMapFromTuples(
 		"user_id", userId,
@@ -90,7 +90,7 @@ func (c *PasswordsHttpCommandableClientV1) Authenticate(ctx context.Context, cor
 	return val, nil
 }
 
-func (c *PasswordsHttpCommandableClientV1) ChangePassword(ctx context.Context, correlationId string, userId string,
+func (c *PasswordsCommandableHttpClientV1) ChangePassword(ctx context.Context, correlationId string, userId string,
 	oldPassword string, newPassword string) error {
 	params := cdata.NewAnyValueMapFromTuples(
 		"user_id", userId,
@@ -102,7 +102,7 @@ func (c *PasswordsHttpCommandableClientV1) ChangePassword(ctx context.Context, c
 	return err
 }
 
-func (c *PasswordsHttpCommandableClientV1) ValidateCode(ctx context.Context, correlationId string, userId string,
+func (c *PasswordsCommandableHttpClientV1) ValidateCode(ctx context.Context, correlationId string, userId string,
 	code string) (valid bool, err error) {
 	params := cdata.NewAnyValueMapFromTuples(
 		"user_id", userId,
@@ -127,7 +127,7 @@ func (c *PasswordsHttpCommandableClientV1) ValidateCode(ctx context.Context, cor
 	return val, nil
 }
 
-func (c *PasswordsHttpCommandableClientV1) ResetPassword(ctx context.Context, correlationId string, userId string,
+func (c *PasswordsCommandableHttpClientV1) ResetPassword(ctx context.Context, correlationId string, userId string,
 	code string, password string) error {
 	params := cdata.NewAnyValueMapFromTuples(
 		"user_id", userId,
@@ -138,7 +138,7 @@ func (c *PasswordsHttpCommandableClientV1) ResetPassword(ctx context.Context, co
 	return err
 }
 
-func (c *PasswordsHttpCommandableClientV1) RecoverPassword(ctx context.Context, correlationId string, userId string) error {
+func (c *PasswordsCommandableHttpClientV1) RecoverPassword(ctx context.Context, correlationId string, userId string) error {
 	params := cdata.NewAnyValueMapFromTuples(
 		"user_id", userId,
 	)

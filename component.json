@@ -1,6 +1,10 @@
 {
-  "name": "client-passwords-go",
-  "registry": "pipdevs/client-passwords-go",
+  "name": "client-roles-go",
+  "type": "client",
+  "language": "go",
   "version": "1.0.0",
-  "build": 0
+  "build": 0,
+  "registry": "pipdevs",
+  "artifacts": [
+  ]
 }
