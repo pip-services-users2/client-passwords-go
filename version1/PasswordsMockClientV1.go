@@ -11,7 +11,7 @@ import (
 	crnd "github.com/pip-services3-gox/pip-services3-commons-gox/random"
 )
 
-type PasswordsMemoryClientV1 struct {
+type PasswordsMockClientV1 struct {
 	passwords        []UserPasswordV1
 	lockTimeout      int64
 	attemptTimeout   int64
@@ -22,8 +22,8 @@ type PasswordsMemoryClientV1 struct {
 	code_length      int
 }
 
-func NewPasswordsMemoryClientV1() *PasswordsMemoryClientV1 {
-	c := PasswordsMemoryClientV1{
+func NewPasswordsMockClientV1() *PasswordsMockClientV1 {
+	c := PasswordsMockClientV1{
 		passwords:        make([]UserPasswordV1, 0),
 		lockTimeout:      1800000,      // 30 mins
 		attemptTimeout:   60000,        // 1 min
@@ -36,7 +36,7 @@ func NewPasswordsMemoryClientV1() *PasswordsMemoryClientV1 {
 	return &c
 }
 
-func (c *PasswordsMemoryClientV1) GetPasswordInfo(ctx context.Context, correlationId string, userId string) (result *UserPasswordInfoV1, err error) {
+func (c *PasswordsMockClientV1) GetPasswordInfo(ctx context.Context, correlationId string, userId string) (result *UserPasswordInfoV1, err error) {
 
 	var index = -1
 	for k, v := range c.passwords {
@@ -67,7 +67,7 @@ func (c *PasswordsMemoryClientV1) GetPasswordInfo(ctx context.Context, correlati
 	return &info, nil
 }
 
-func (c *PasswordsMemoryClientV1) SetTempPassword(ctx context.Context, correlationId string, userId string) (password string, err error) {
+func (c *PasswordsMockClientV1) SetTempPassword(ctx context.Context, correlationId string, userId string) (password string, err error) {
 
 	password = "pass" + cconv.StringConverter.ToString(crnd.Integer.Next(0, 1000))
 
@@ -78,14 +78,14 @@ func (c *PasswordsMemoryClientV1) SetTempPassword(ctx context.Context, correlati
 	return password, nil
 }
 
-func (c *PasswordsMemoryClientV1) SetPassword(ctx context.Context, correlationId string, userId string, password string) error {
+func (c *PasswordsMockClientV1) SetPassword(ctx context.Context, correlationId string, userId string, password string) error {
 	password = c.hashPassword(password)
 	userPassword := *NewUserPasswordV1(userId, password)
 	c.passwords = append(c.passwords, userPassword)
 	return nil
 }
 
-func (c *PasswordsMemoryClientV1) DeletePassword(ctx context.Context, correlationId string, userId string) error {
+func (c *PasswordsMockClientV1) DeletePassword(ctx context.Context, correlationId string, userId string) error {
 	var index = -1
 	for i, v := range c.passwords {
 		if v.Id == userId {
@@ -106,7 +106,7 @@ func (c *PasswordsMemoryClientV1) DeletePassword(ctx context.Context, correlatio
 	return nil
 }
 
-func (c *PasswordsMemoryClientV1) Authenticate(ctx context.Context, correlationId string, userId string, password string) (authenticated bool, err error) {
+func (c *PasswordsMockClientV1) Authenticate(ctx context.Context, correlationId string, userId string, password string) (authenticated bool, err error) {
 	hashedPassword := c.hashPassword(password)
 	currentTime := time.Now().UTC()
 
@@ -204,7 +204,7 @@ func (c *PasswordsMemoryClientV1) Authenticate(ctx context.Context, correlationI
 	return userPassword != nil, nil
 }
 
-func (c *PasswordsMemoryClientV1) ChangePassword(ctx context.Context, correlationId string, userId string,
+func (c *PasswordsMockClientV1) ChangePassword(ctx context.Context, correlationId string, userId string,
 	oldPassword string, newPassword string) error {
 
 	var userPassword *UserPasswordV1
@@ -271,7 +271,7 @@ func (c *PasswordsMemoryClientV1) ChangePassword(ctx context.Context, correlatio
 	return nil
 }
 
-func (c *PasswordsMemoryClientV1) ValidateCode(ctx context.Context, correlationId string, userId string,
+func (c *PasswordsMockClientV1) ValidateCode(ctx context.Context, correlationId string, userId string,
 	code string) (valid bool, err error) {
 
 	data, err := c.readUserPassword(ctx, correlationId, userId)
@@ -285,7 +285,7 @@ func (c *PasswordsMemoryClientV1) ValidateCode(ctx context.Context, correlationI
 
 }
 
-func (c *PasswordsMemoryClientV1) ResetPassword(ctx context.Context, correlationId string, userId string, code string, password string) error {
+func (c *PasswordsMockClientV1) ResetPassword(ctx context.Context, correlationId string, userId string, code string, password string) error {
 
 	var userPassword *UserPasswordV1
 
@@ -345,7 +345,7 @@ func (c *PasswordsMemoryClientV1) ResetPassword(ctx context.Context, correlation
 	return nil
 }
 
-func (c *PasswordsMemoryClientV1) RecoverPassword(ctx context.Context, correlationId string, userId string) error {
+func (c *PasswordsMockClientV1) RecoverPassword(ctx context.Context, correlationId string, userId string) error {
 
 	// Retrieve user
 	userPassword, err := c.readUserPassword(ctx, correlationId, userId)
@@ -379,7 +379,7 @@ func (c *PasswordsMemoryClientV1) RecoverPassword(ctx context.Context, correlati
 
 }
 
-func (c *PasswordsMemoryClientV1) readUserPassword(ctx context.Context, correlationId string, userId string) (result *UserPasswordV1, err error) {
+func (c *PasswordsMockClientV1) readUserPassword(ctx context.Context, correlationId string, userId string) (result *UserPasswordV1, err error) {
 
 	var index = -1
 	for k, v := range c.passwords {
@@ -403,11 +403,11 @@ func (c *PasswordsMemoryClientV1) readUserPassword(ctx context.Context, correlat
 	return &item, nil
 }
 
-func (c *PasswordsMemoryClientV1) generateVerificationCode() string {
+func (c *PasswordsMockClientV1) generateVerificationCode() string {
 	return cdata.IdGenerator.NextShort()[0:6]
 }
 
-func (c *PasswordsMemoryClientV1) hashPassword(password string) string {
+func (c *PasswordsMockClientV1) hashPassword(password string) string {
 	if password == "" {
 		return ""
 	}
@@ -416,7 +416,7 @@ func (c *PasswordsMemoryClientV1) hashPassword(password string) string {
 	return (string)(sum)
 }
 
-func (c *PasswordsMemoryClientV1) verifyPassword(ctx context.Context, correlationId string, password string) (res bool, err error) {
+func (c *PasswordsMockClientV1) verifyPassword(ctx context.Context, correlationId string, password string) (res bool, err error) {
 
 	if password == "" {
 		err = cerr.NewBadRequestError(
